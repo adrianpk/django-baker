@@ -11,7 +11,7 @@ pathpatterns = [
         {{ model_name }}ListView.as_view(),
         name="{{ model_name_slug }}_list"),
 
-    path('<string>/',
+    path('<slug:pk>/',
         {{ model_name }}DetailView.as_view(),
         name="{{ model_name_slug }}_detail"),
 
@@ -19,11 +19,11 @@ pathpatterns = [
         {{ model_name }}CreateView.as_view(),
         name="{{ model_name_slug }}_create"),
 
-    path('<string>/update/',
+    path('<slug:pk>/update/',
         {{ model_name }}UpdateView.as_view(),
         name="{{ model_name_slug }}_update"),
 
-    path('<string>/delete/',
+    path('<slug:pk>/delete/',
         login_required({{ model_name }}DeleteView.as_view()),
         name="{{ model_name_slug }}_delete"),
 ]
@@ -33,7 +33,7 @@ pathpatterns = [
         {{ model_name }}ListView.as_view(),
         name="{{ model_name_slug }}_list"),
 
-    path('<string>/',
+    path('<slug:pk>/',
         {{ model_name }}DetailView.as_view(),
         name="{{ model_name_slug }}_detail"),
 
@@ -41,11 +41,11 @@ pathpatterns = [
         login_required({{ model_name }}CreateView.as_view()),
         name="{{ model_name_slug }}_create"),
 
-    path('<string>/update/',
+    path('<slug:pk>/update/',
         login_required({{ model_name }}UpdateView.as_view()),
         name="{{ model_name_slug }}_update"),
 
-    path('<string>/delete/',
+    path('<slug:pk>/delete/',
         login_required({{ model_name }}DeleteView.as_view()),
         name="{{ model_name_slug }}_delete"),
 ]
