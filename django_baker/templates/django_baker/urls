@@ -1,50 +1,52 @@
-from django.conf.urls import url
+from django.conf.paths import path
 from ..views import ({{ model_name }}ListView, {{ model_name }}CreateView, {{ model_name }}DetailView,
                      {{ model_name }}UpdateView, {{ model_name }}DeleteView)
 from django.contrib.auth.decorators import login_required
 
+# Enclose function calls with 'login_required' when required
+# i.e.: login_required(GeoAreaCreateView.as_view()),
 {% if slug_field %}
-urlpatterns = [
-    url(r'^create/$',  # NOQA
-        login_required({{ model_name }}CreateView.as_view()),
-        name="{{ model_name_slug }}_create"),
+pathpatterns = [
+    path('',
+        {{ model_name }}ListView.as_view(),
+        name="{{ model_name_slug }}_list"),
 
-    url(r'^(?P<{{ slug_field_name }}>[-\w]+)/update/$',
-        login_required({{ model_name }}UpdateView.as_view()),
-        name="{{ model_name_slug }}_update"),
-
-    url(r'^(?P<{{ slug_field_name }}>[-\w]+)/delete/$',
-        login_required({{ model_name }}DeleteView.as_view()),
-        name="{{ model_name_slug }}_delete"),
-
-    url(r'^(?P<{{ slug_field_name }}>[-\w]+)/$',
+    path('<string>/',
         {{ model_name }}DetailView.as_view(),
         name="{{ model_name_slug }}_detail"),
 
-    url(r'^$',
-        {{ model_name }}ListView.as_view(),
-        name="{{ model_name_slug }}_list"),
+    path('create/',  # NOQA
+        {{ model_name }}CreateView.as_view(),
+        name="{{ model_name_slug }}_create"),
+
+    path('<string>/update/',
+        {{ model_name }}UpdateView.as_view(),
+        name="{{ model_name_slug }}_update"),
+
+    path('<string>/delete/',
+        login_required({{ model_name }}DeleteView.as_view()),
+        name="{{ model_name_slug }}_delete"),
 ]
 {% else %}
-urlpatterns = [
-    url(r'^create/$',  # NOQA
-        login_required({{ model_name }}CreateView.as_view()),
-        name="{{ model_name_slug }}_create"),
+pathpatterns = [
+    path('',
+        {{ model_name }}ListView.as_view(),
+        name="{{ model_name_slug }}_list"),
 
-    url(r'^(?P<pk>\d+)/update/$',
-        login_required({{ model_name }}UpdateView.as_view()),
-        name="{{ model_name_slug }}_update"),
-
-    url(r'^(?P<pk>\d+)/delete/$',
-        login_required({{ model_name }}DeleteView.as_view()),
-        name="{{ model_name_slug }}_delete"),
-
-    url(r'^(?P<pk>\d+)/$',
+    path('<string>/',
         {{ model_name }}DetailView.as_view(),
         name="{{ model_name_slug }}_detail"),
 
-    url(r'^$',
-        {{ model_name }}ListView.as_view(),
-        name="{{ model_name_slug }}_list"),
+    path('create/',  # NOQA
+        login_required({{ model_name }}CreateView.as_view()),
+        name="{{ model_name_slug }}_create"),
+
+    path('<string>/update/',
+        login_required({{ model_name }}UpdateView.as_view()),
+        name="{{ model_name_slug }}_update"),
+
+    path('<string>/delete/',
+        login_required({{ model_name }}DeleteView.as_view()),
+        name="{{ model_name_slug }}_delete"),
 ]
 {% endif %}
