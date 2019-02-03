@@ -7,46 +7,46 @@ from django.contrib.auth.decorators import login_required
 # i.e.: login_required(GeoAreaCreateView.as_view()),
 {% if slug_field %}
 pathpatterns = [
-    path('',
-        {{ model_name }}ListView.as_view(),
-        name="{{ model_name_slug }}_list"),
-
-    path('<slug:pk>/',
-        {{ model_name }}DetailView.as_view(),
-        name="{{ model_name_slug }}_detail"),
-
     path('create/',  # NOQA
         {{ model_name }}CreateView.as_view(),
         name="{{ model_name_slug }}_create"),
 
-    path('<slug:pk>/update/',
+    path('<slug:slug>/update/',
         {{ model_name }}UpdateView.as_view(),
         name="{{ model_name_slug }}_update"),
 
-    path('<slug:pk>/delete/',
+    path('<slug:slug>/delete/',
         login_required({{ model_name }}DeleteView.as_view()),
         name="{{ model_name_slug }}_delete"),
-]
-{% else %}
-pathpatterns = [
-    path('',
-        {{ model_name }}ListView.as_view(),
-        name="{{ model_name_slug }}_list"),
 
-    path('<slug:pk>/',
+    path('<slug:slug>/',
         {{ model_name }}DetailView.as_view(),
         name="{{ model_name_slug }}_detail"),
 
+    path('',
+        {{ model_name }}ListView.as_view(),
+        name="{{ model_name_slug }}_list"),
+]
+{% else %}
+pathpatterns = [
     path('create/',  # NOQA
         login_required({{ model_name }}CreateView.as_view()),
         name="{{ model_name_slug }}_create"),
 
-    path('<slug:pk>/update/',
+    path('int:pk>/update/',
         login_required({{ model_name }}UpdateView.as_view()),
         name="{{ model_name_slug }}_update"),
 
-    path('<slug:pk>/delete/',
+    path('<int:pk>/delete/',
         login_required({{ model_name }}DeleteView.as_view()),
         name="{{ model_name_slug }}_delete"),
+
+    path('<int:pk>/',
+        {{ model_name }}DetailView.as_view(),
+        name="{{ model_name_slug }}_detail"),
+
+    path('',
+        {{ model_name }}ListView.as_view(),
+        name="{{ model_name_slug }}_list"),
 ]
 {% endif %}
